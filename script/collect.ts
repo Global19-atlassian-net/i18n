@@ -10,7 +10,7 @@ import got from 'got'
 import { sync as mkdir } from 'make-dir'
 import * as path from 'path'
 import { execSync } from 'child_process'
-import { Octokit } from '@octokit/rest'
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'
 import { roggy, IResponse as IRoggyResponse } from 'roggy'
 import { generateCrowdinConfig } from '../lib/generate-crowdin-config'
 import * as packageJson from '../package.json'
@@ -30,12 +30,7 @@ const github = new Octokit({
   auth: process.env.GH_TOKEN ?? '',
 })
 
-interface IResponse {
-  tag_name: string
-  assets: Octokit.ReposGetReleaseByTagResponseAssetsItem[]
-}
-
-let release: IResponse
+let release: RestEndpointMethodTypes['repos']['getRelease']['response']['data']
 
 main().catch((err: Error) => {
   console.log('Something goes wrong. Error: ', err)
